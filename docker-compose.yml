@@ -1,0 +1,46 @@
+version: "3"
+
+services:     
+    des02-nginx: 
+        container_name: des02-nginx
+        build: ./nginx
+        ports: 
+            - 8080:80
+        volumes: 
+            - ./nginx/html:/usr/src/shared/nginx/html
+        restart: always
+        networks: 
+            - des02-network
+    # API
+    des02-node: 
+        container_name: des02-node
+        build: ./node
+        volumes: 
+            - ./node:/usr/src/app
+        restart: always
+        depends_on: 
+            - des02-db
+        networks: 
+            - des02-network    
+    # Database
+    des02-db: 
+        container_name: des02-db
+        image: mysql:latest
+        environment: 
+            MYSQL_DATABASE: des02-db
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_PASSWORD: root
+            MYSQL_ROOT_PASSWORD: root 
+        volumes: 
+            - ./data/:/var/lib/mysql        
+        restart: always  
+        networks: 
+            - des02-network      
+
+        
+# NETWORKS            
+networks: 
+    des02-network:
+        name: des02-network
+        driver: bridge
+
