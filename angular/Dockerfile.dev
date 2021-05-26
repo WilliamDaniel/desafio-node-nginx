@@ -1,0 +1,16 @@
+FROM node:14.17.0 AS build
+
+WORKDIR /usr/src/app
+
+EXPOSE 8000
+
+RUN apt-get update && apt-get install vim -y
+
+RUN npm cache clean --force && \
+    npm install -g npm@latest && \
+    npm init -y && \
+    npm install -g @angular/cli
+    
+CMD ["tail", "-f", "/dev/null"]
+
+

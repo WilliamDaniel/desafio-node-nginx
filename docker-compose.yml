@@ -27,22 +27,24 @@ services:
         networks: 
             - db-des02-network  
             - des02-network
+    # WebApp
     des02-app: 
         container_name: des02-app
-        image:  :dev
-        build: ./angular 
+        image:  des02-app:dev
+        build: ./angular
         volumes: 
-            - ./angular/app/des02:/usr/src/app/des02
+            - ./angular:/usr/src/app/des02
         restart: always
         networks: 
             - des02-network
         depends_on: 
             - des02-nginx
-
     # Database
     des02-db: 
         container_name: des02-mysql
         image: mysql:8.0.25
+        ports: 
+            - 3306:3306
         environment: 
             MYSQL_DATABASE: des02-db
             MYSQL_ROOT_PASSWORD: root
